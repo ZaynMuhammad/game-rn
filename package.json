@@ -6,7 +6,6 @@
     "@borndotcom/react-native-godot": "1.0.1",
     "@expo/ui": "~57.0.16",
     "expo": "~57.0.20",
-    "expo-build-properties": "~57.0.17",
     "expo-constants": "~57.0.17",
     "expo-dev-client": "~57.0.18",
     "expo-device": "~57.0.1",
@@ -22,13 +21,11 @@
     "expo-system-ui": "~57.0.3",
     "expo-web-browser": "~57.0.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
     "react-native": "0.86.3",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
-    "react-native-web": "~0.21.0",
     "react-native-worklets": "0.10.1",
     "react-native-worklets-core": "1.6.3",
     "setimmediate": "1.0.5"
@@ -43,12 +40,10 @@
   "scripts": {
     "start": "expo start --dev-client",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web",
     "lint": "expo lint",
-    "godot:download": "download-prebuilt",
-    "postinstall": "download-prebuilt"
+    "godot:download": "node ./scripts/download-godot-ios.js",
+    "postinstall": "node ./scripts/download-godot-ios.js"
   },
   "private": true,
   "overrides": {
