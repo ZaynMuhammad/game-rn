@@ -8,7 +8,7 @@ import {
 import * as Device from 'expo-device';
 import * as FileSystem from 'expo-file-system/legacy';
 import { useEffect } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import type { GodotGameProps } from './godot-game.types';
 
@@ -17,26 +17,12 @@ export function startGodot(projectName: string) {
     return Promise.resolve();
   }
 
-  if (Platform.OS === 'ios' && FileSystem.bundleDirectory == null) {
+  if (FileSystem.bundleDirectory == null) {
     return Promise.reject(new Error('The iOS application bundle directory is unavailable.'));
   }
 
   return runOnGodotThread(() => {
     'worklet';
-
-    if (Platform.OS === 'android') {
-      RTNGodot.createInstance([
-        '--path',
-        `/${projectName}`,
-        '--rendering-driver',
-        'opengl3',
-        '--rendering-method',
-        'gl_compatibility',
-        '--display-driver',
-        'embedded',
-      ]);
-      return;
-    }
 
     const args = [
       '--main-pack',
