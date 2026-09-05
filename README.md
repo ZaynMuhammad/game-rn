@@ -1,27 +1,70 @@
-# Welcome to your Expo app 👋
+# Expo + React Native Godot
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This Expo project is configured to embed Godot on Android and iOS with
+[`@borndotcom/react-native-godot`](https://github.com/borndotcom/react-native-godot).
 
 ## Get started
 
 1. Install dependencies
 
+   The LibGodot downloader requires `curl` and `unzip` on your `PATH`.
+
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Export a Godot project.
+
+   Use the same project name for both platforms. For a project named `main`, place the Android
+   export at `android/app/src/main/assets/main/` and add the iOS export `main.pck` to the Xcode app
+   target so it is copied into the application bundle. Generate the native projects first if they
+   do not exist:
 
    ```bash
-   npx expo start
+   npx expo prebuild
    ```
 
-In the output, you'll find options to open the app in a
+3. Build the native development app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run android
+   # or, on macOS
+   npm run ios
+   ```
+
+4. Start Metro for the installed development build
+
+   ```bash
+   npm start
+   ```
+
+`react-native-godot` includes native code and does not work in Expo Go. Re-run the native build
+after changing native dependencies.
+
+## Render a Godot project
+
+The platform-specific `GodotGame` component initializes Godot, renders its main window, and tears
+down the singleton engine instance when it unmounts:
+
+```tsx
+import { GodotGame } from '@/components/godot-game';
+
+export default function GameScreen() {
+  return <GodotGame projectName="main" />;
+}
+```
+
+The component expects `/main` in Android packaged assets and `main.pck` in the iOS app bundle. The
+web implementation renders an explanatory fallback instead of loading the native module.
+
+## Included tooling
+
+- `npm run godot:download` downloads the LibGodot binaries required by the native bridge.
+- `npm install` also runs that download through `postinstall`, which keeps local and cloud builds
+  reproducible.
+- `babel.config.js` enables the React Native Worklets Core transform used by the Godot thread.
+- Worklets Core is overridden to `1.6.3`, which includes the Hermes linker update required by
+  React Native 0.82 and newer.
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
